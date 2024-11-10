@@ -2,7 +2,7 @@ import requests
 def get_data(location):
     url = "https://api.yelp.com/v3/businesses/search"
 
-    querystring = {"location":"losangeles","categories":"hiking"}
+    querystring = {"location":location,"categories":"hiking"}
 
     payload = ""
     headers = {

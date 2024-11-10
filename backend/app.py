@@ -10,3 +10,6 @@ CORS(app)
 def index():
     location = request.args.get('location')
     return jsonify(get_data(location).json())
+
+
+# e18a728a313a606c 
