@@ -1,15 +1,27 @@
 import requests
-def get_data(location):
-    url = "https://api.yelp.com/v3/businesses/search"
+from dotenv import load_dotenv
+import os
 
-    querystring = {"location":location,"categories":"hiking"}
+def get_data(lat, lng):
+    load_dotenv()
+    url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
+
+    querystring = {"location": f"{lat},{lng}","keyword":"hiking","key": os.getenv('API_KEY'),"radius":"50000"}
 
     payload = ""
     headers = {
         "User-Agent": "insomnia/10.1.1",
-        "Authorization": "Bearer AxZmESTbmKUy6VeLEaStDvnZBp5iRnBXB0vXs7nZxXxBNayNvdDw0DaLq6nXHOnJTzWqjWPb30aKYAgB_n4C8WgC4wDXw_YVVfpJKQAtIDjb9gFSl7SaeTY9MgEvZ3Yx"
+        "Authorization": f"Bearer {os.getenv('auth')}"
     }
 
     response = requests.request("GET", url, data=payload, headers=headers, params=querystring)
+
+
+    for place in response['results']:
+        if 'photos' in place:
+            
+            photo_reference = place['photos'][0]['photo_reference']
+            place['image'] = f"https://maps.googleapis.com/maps/api/place/photo?key={os.getenv('API_KEY')}&photo_reference={photo_reference}&maxwidth=400"
+
 
     return response
